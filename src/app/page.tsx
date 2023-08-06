@@ -1,95 +1,72 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+'use client';
+import { useState } from 'react';
+import { TabContext, TabPanel } from '@mui/lab';
 
-export default function Home() {
+import MenuSections from './components/MenuSections';
+import styles from './page.module.css';
+import TabsENUM from './utils/TabsENUM';
+import TaskPanel from './components/TaskPanel';
+import EmployeePanel from './components/EmployeePanel';
+import DepartmentPanel from './components/DepartmentPanel';
+import { Box } from '@mui/material';
+
+const HomePage = () => {
+
+  const [currentTab, setCurrentTab] = useState(TabsENUM.TASKS);
+  const tabPanelStyle = {
+    height: '100%',
+    width: '100%',
+    paddingTop: '10px',
+    overflowY: 'auto',
+    '&::-webkit-scrollbar': { width: 10, WebkitAppearance: 'none' },
+    '&::-webkit-scrollbar-thumb': {
+      borderRadius: 8,
+      border: '2px solid',
+      borderColor: '#E7EBF0',
+      backgroundColor: 'rgba(0 0 0 / 0.5)',
+    },
+  };
+
+  const boxPanelStyle = {
+    display: 'grid',
+    p: 2,
+    gap: 2,
+    placeItems: 'center',
+    gridTemplateColumns: {
+      xs: '1fr',
+      sm: 'repeat(2, 1fr)',
+      md: 'repeat(3, 1fr)',
+      lg: 'repeat(4, 1fr)',
+    },
+  };
+
   return (
     <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+      <div className={styles.container}>
+        <TabContext value={currentTab}>
+          <MenuSections
+            currentTab={currentTab}
+            setCurrentTab={setCurrentTab}
+          />
+          <TabPanel value={TabsENUM.TASKS} sx={tabPanelStyle}>
+            <Box sx={boxPanelStyle}>
+              <TaskPanel />
+            </Box>
+          </TabPanel>
+          <TabPanel value={TabsENUM.EMPLOYEES} sx={tabPanelStyle}>
+            <Box sx={boxPanelStyle}>
+              <EmployeePanel />
+            </Box>
+          </TabPanel>
+          <TabPanel value={TabsENUM.DEPARTMENTS} sx={tabPanelStyle}>
+            <Box sx={boxPanelStyle}>
+              <DepartmentPanel />
+            </Box>
+          </TabPanel>
+        </TabContext >
       </div>
     </main>
-  )
+  );
 }
+
+export default HomePage;

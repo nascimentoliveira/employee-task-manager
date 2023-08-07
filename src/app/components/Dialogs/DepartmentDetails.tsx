@@ -1,5 +1,5 @@
 'use client';
-import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import Swal from 'sweetalert2';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
@@ -11,14 +11,14 @@ import {
   DialogActions,
   DialogTitle,
   IconButton,
-  TextField,
   Typography,
 } from '@mui/material';
 
-import { Department } from '../types/DepartmentType';
-import api from '../utils/api';
+import { Department } from '../../types/DepartmentType';
+import api from '../../utils/api';
+import DepartmentForm, { DepartmentData } from '../Forms/DepartmentForm';
 
-interface DepartmentCardProps {
+interface DepartmentDetailsProps {
   department: Department;
   expanded: boolean;
   setExpanded: Dispatch<SetStateAction<boolean>>;
@@ -27,23 +27,27 @@ interface DepartmentCardProps {
   setLoading: Dispatch<SetStateAction<boolean>>;
 }
 
-const DepartmentDetails = ({ 
+const DepartmentDetails = ({
   department,
-  expanded, 
+  expanded,
   setExpanded,
-  refresh, 
+  refresh,
   setRefresh,
   setLoading,
-}: DepartmentCardProps) => {
+}: DepartmentDetailsProps) => {
 
   const [editMode, setEditMode] = useState<boolean>(false);
-  const [editedName, setEditedName] = useState<string>(department.name);
+  const [form, setForm] = useState<DepartmentData>({
+    name: department.name,
+  });
 
   const handleClose = () => {
     if (editMode) {
       setExpanded(!expanded);
       setEditMode(false);
-      setEditedName(department.name);
+      setForm({
+        name: department.name,
+      });
     }
   };
 
@@ -56,10 +60,7 @@ const DepartmentDetails = ({
     event.stopPropagation();
     try {
       setLoading(true);
-      const body = {
-        name: editedName,
-      }
-      await api.put(`/departments/${department.id}`, body);
+      await api.put(`/departments/${department.id}`, form);
       setEditMode(false);
       setLoading(false);
       setRefresh(!refresh);
@@ -77,7 +78,9 @@ const DepartmentDetails = ({
   const handleCancelClick = (event: React.MouseEvent) => {
     event.stopPropagation();
     setEditMode(!editMode);
-    setEditedName(department.name);
+    setForm({
+      name: department.name,
+    });
   };
 
   const handleDeleteClick = async (event: React.MouseEvent) => {
@@ -154,21 +157,10 @@ const DepartmentDetails = ({
         )}
       </DialogActions>
       {editMode ? (
-        <div style={{ padding: '15px' }}>
-          <TextField
-            label='Name'
-            multiline
-            fullWidth
-            variant='standard'
-            value={editedName}
-            onClick={(event: React.MouseEvent) => {
-              event.stopPropagation();
-            }}
-            onChange={(event: ChangeEvent<HTMLInputElement>) =>
-              setEditedName(event.target.value)
-            }
-          />
-        </div>
+        <DepartmentForm
+          form={form}
+          setForm={setForm}
+        />
       ) : (
         <DialogTitle>
           <Typography variant='h5'>

@@ -2,8 +2,8 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 import { Card, CardHeader, CardMedia } from '@mui/material';
 
-import DepartmentDetails from './DepartmentDetails';
-import { Department } from '../types/DepartmentType';
+import DepartmentDetails from '../Dialogs/DepartmentDetails';
+import { Department } from '../../types/DepartmentType';
 
 interface DepartmentCardProps {
   department: Department;

@@ -3,14 +3,14 @@ import { useEffect, useState } from 'react';
 import { Backdrop, CircularProgress } from '@mui/material';
 import Swal from 'sweetalert2';
 
-import { Department } from '../types/DepartmentType';
-import DepartmentCard from './DepartmentsCard';
-import api from '../utils/api';
+import { Department } from '../../types/DepartmentType';
+import DepartmentCard from '../Cards/DepartmentCard';
+import api from '../../utils/api';
+import { PanelProps } from '../../types/PanelProps';
 
-const DepartmentPanel = () => {
+const DepartmentPanel = ({ refresh, setRefresh }: PanelProps) => {
 
   const [departments, setDepartments] = useState<Department[]>([]);
-  const [refresh, setRefresh] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -22,20 +22,19 @@ const DepartmentPanel = () => {
     try {
       const response = await api.get('/departments');
       setDepartments(response.data.data);
-      console.log(response.data.data)
       setLoading(false);
     } catch (error) {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
-        text: 'Error fetching data!',
+        text: 'Error fetching departments!',
         confirmButtonText: 'Try again',
       }).then((result) => {
         if (result.isConfirmed) {
           fetchData();
         }
       });
-      console.error('Error fetching data:', error);
+      console.error('Error fetching departments:', error);
       setLoading(false);
     }
   };
@@ -47,7 +46,7 @@ const DepartmentPanel = () => {
           sx={{ color: '#fff' }}
           open={loading}
         >
-          <CircularProgress color="inherit" />
+          <CircularProgress color='inherit' />
         </Backdrop>
       ) : (
         departments.map((department, index) => (

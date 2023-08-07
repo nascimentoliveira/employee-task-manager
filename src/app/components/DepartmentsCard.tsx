@@ -1,30 +1,22 @@
 'use client';
-import { useState } from 'react';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
-import { 
-  Button, 
-  Card, 
-  CardHeader, 
-  CardMedia, 
-  Dialog, 
-  DialogActions, 
-  DialogContent, 
-  DialogContentText, 
-  DialogTitle, 
-  IconButton, 
-  Typography,
-} from '@mui/material';
+import { Dispatch, SetStateAction, useState } from 'react';
+import { Card, CardHeader, CardMedia } from '@mui/material';
 
-const DepartmentCard = () => {
+import DepartmentDetails from './DepartmentDetails';
+import { Department } from '../types/DepartmentType';
 
-  const [expanded, setExpanded] = useState(false);
+interface DepartmentCardProps {
+  department: Department;
+  refresh: boolean;
+  setRefresh: Dispatch<SetStateAction<boolean>>;
+  setLoading: Dispatch<SetStateAction<boolean>>;
+}
+
+const DepartmentCard = ({ department, refresh, setRefresh, setLoading }: DepartmentCardProps) => {
+
+  const [expanded, setExpanded] = useState<boolean>(false);
 
   const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
-
-  const handleClose = () => {
     setExpanded(!expanded);
   };
 
@@ -32,7 +24,7 @@ const DepartmentCard = () => {
     <Card sx={{ maxWidth: 400 }}
       onClick={handleExpandClick}>
       <CardHeader
-        title='HR dept'
+        title={department.name}
       />
       <CardMedia
         component='img'
@@ -41,29 +33,14 @@ const DepartmentCard = () => {
         image='/department.png'
         alt='department'
       />
-      <Dialog
-        open={expanded}
-        keepMounted
-        scroll={'paper'}
-        onClose={handleClose}
-      >
-        <DialogActions>
-          <IconButton>
-            <ModeEditOutlineIcon />
-          </IconButton>
-          <IconButton>
-            <DeleteForeverIcon />
-          </IconButton>
-        </DialogActions>
-        <DialogTitle>
-          <Typography variant='h5'>
-            HR Dept
-          </Typography>
-        </DialogTitle>
-        <DialogActions>
-          <Button onClick={handleClose}>Close</Button>
-        </DialogActions>
-      </Dialog>
+      <DepartmentDetails
+        department={department}
+        expanded={expanded}
+        setExpanded={setExpanded}
+        refresh={refresh}
+        setRefresh={setRefresh}
+        setLoading={setLoading}
+      />
     </Card>
   );
 }

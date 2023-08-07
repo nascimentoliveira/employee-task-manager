@@ -1,9 +1,6 @@
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
-import AddTaskIcon from '@mui/icons-material/AddTask';
 import BusinessIcon from '@mui/icons-material/Business';
-import DomainAddIcon from '@mui/icons-material/DomainAdd';
 import GroupIcon from '@mui/icons-material/Group';
-import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import { Box, Tab, Tabs } from '@mui/material';
 
 import { TabProps } from '../types/TabProps';

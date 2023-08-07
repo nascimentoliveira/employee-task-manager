@@ -5,9 +5,9 @@
   padding: 2rem;
   min-height: 100vh;
   height: 100vh;
-  background: linear-gradient(214deg, #e2dcc8, #288fad);
-  background-size: 120% 120%;
-  animation: gradient-animation 10s ease infinite;
+  background: linear-gradient(307deg, #1a37ee, #f5c7fa, #b3e3d9, #e3a360);
+  background-size: 240% 240%;
+  animation: gradient-animation 16s ease infinite;
 }
 
 @keyframes gradient-animation {
